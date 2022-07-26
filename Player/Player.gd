@@ -15,26 +15,37 @@ var vel = Vector2() # For whatever reason I didn't like long variable names
 var canrestart = false
 var candie = true
 
+var player_moved = false
 
-# WHAT THE FUCK DID I DO WHY DIDN'T I PUT ANY VARIABLES FOR THE NODES I HAD 10 DAYS LEFT I WASN'T IN A TIME CRUNCH WHY WHY WHY WHY WHY WHY WHY
+# WHAT THE freak DID I DO WHY DIDN'T I PUT ANY VARIABLES FOR THE NODES I HAD 10 DAYS LEFT I WASN'T IN A TIME CRUNCH WHY WHY WHY WHY WHY WHY WHY
 # I'm lucky I didn't do it too much so the game still runs fine. But still, Why?!
 func die():
 	if candie:
+		player_moved = false # Just some semi-jank workaround
+		SpeedrunTimer.timer_on = false
 		#$Explosion.set_emitting(true)
 		$AnimationPlayer.play("die")
 		canmove = false
 		canrestart = true
-		$Camera2D/died.set_visible_characters(-1)
-		$Camera2D/restart.set_visible_characters(-1)
+		$Camera2D/died.visible = true
+		$Camera2D/restart.visible = true
+		$Camera2D/time.visible = false
 		$Audio/HurtSFX.play() # I still don't know why I called it "HurtSFX", you didn't have more than 1 HP. I mean, I guess you get hurt so badly you die..?
 		candie = false
 
+# Was I not aware that the visible property is a thing?
 func _ready():
-	$Camera2D/died.set_visible_characters(0)
-	$Camera2D/restart.set_visible_characters(0)
+	if GlobalFlags.speedrun_mode:
+		$Camera2D/time.visible = true
+		SpeedrunTimer.timer_on = true
+	#$Camera2D/died.set_visible_characters(0)
+	#$Camera2D/restart.set_visible_characters(0)
 	#Hides the restart prompt when the level starts
 	
 func _physics_process(delta):
+	if player_moved:
+		SpeedrunTimer.timer_on = true
+	
 	vel.y += gravity
 	
 	#Moving left and right
@@ -42,10 +53,12 @@ func _physics_process(delta):
 		vel.x = speed
 		$Sprite.play("Walking")
 		$Sprite.set_flip_h(false)
+		player_moved = true
 	elif Input.is_action_pressed("left") and canmove == true:
 		vel.x = -speed
 		$Sprite.play("Walking")
 		$Sprite.set_flip_h(true)
+		player_moved = true
 	else:
 		vel.x = 0 #Prevents player from moving when nothing is pressed
 		$Sprite.play("Idle")
@@ -56,6 +69,7 @@ func _physics_process(delta):
 			vel.y = -jumppower #Negative Y is up in Godot 2D
 			$Sprite.play("Idle")
 			$Audio/JumpSFX.play()
+	
 	
 	#Crouching (kinda useless but whatever it looks cool I guess)
 	if Input.is_action_pressed("down") and vel.x == 0: #Player will not crouch if moving in X-axis, can still crouch jump like it's CS:GO

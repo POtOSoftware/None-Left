@@ -3,6 +3,9 @@ extends Control
 onready var quitButton = $Quit
 
 func _ready():
+	SpeedrunTimer.timer_on = false
+	SpeedrunTimer.time = 0
+	
 	if !MusicController.IsMusicPlaying():
 		MusicController.PlayMusic("res://Sounds/Music/Title Screen.ogg")
 	

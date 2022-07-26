@@ -6,20 +6,21 @@
 [node name="Settings" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 1 )
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="MuteMusic" type="Button" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -80.0
-margin_top = -48.15
-margin_right = 80.0
-margin_bottom = -0.149994
+anchor_bottom = 1.0
+margin_left = -58.5
+margin_right = 58.5
+alignment = 1
+
+[node name="MuteMusic" type="Button" parent="VBoxContainer"]
+margin_top = 333.0
+margin_right = 117.0
+margin_bottom = 348.0
 focus_mode = 0
 theme = ExtResource( 1 )
 toggle_mode = true
@@ -29,23 +30,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MuteSFX" type="Button" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -80.0
-margin_top = 18.0
-margin_right = 80.0
-margin_bottom = 66.0
+[node name="MuteSFX" type="Button" parent="VBoxContainer"]
+margin_top = 352.0
+margin_right = 117.0
+margin_bottom = 367.0
 focus_mode = 0
 theme = ExtResource( 1 )
 toggle_mode = true
 enabled_focus_mode = 0
 text = "Mute SFX"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="SpeedrunMode" type="Button" parent="VBoxContainer"]
+margin_top = 371.0
+margin_right = 117.0
+margin_bottom = 386.0
+focus_mode = 0
+theme = ExtResource( 1 )
+toggle_mode = true
+enabled_focus_mode = 0
+text = "Speedrun Mode"
 
 [node name="MainMenu" type="Button" parent="."]
 anchor_top = 1.0
@@ -58,6 +61,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="toggled" from="MuteMusic" to="." method="_on_MuteMusic_toggled"]
-[connection signal="toggled" from="MuteSFX" to="." method="_on_MuteSFX_toggled"]
+[connection signal="toggled" from="VBoxContainer/MuteMusic" to="." method="_on_MuteMusic_toggled"]
+[connection signal="toggled" from="VBoxContainer/MuteSFX" to="." method="_on_MuteSFX_toggled"]
+[connection signal="toggled" from="VBoxContainer/SpeedrunMode" to="." method="_on_SpeedrunMode_toggled"]
 [connection signal="pressed" from="MainMenu" to="." method="_on_MainMenu_pressed"]

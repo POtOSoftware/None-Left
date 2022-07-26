@@ -183,3 +183,4 @@ next_level = "res://Levels/End.tscn"
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
+bus = "Music"

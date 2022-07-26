@@ -36,6 +36,7 @@ func die():
 # Was I not aware that the visible property is a thing?
 func _ready():
 	if GlobalFlags.speedrun_mode:
+		player_moved = false
 		$Camera2D/time.visible = true
 		SpeedrunTimer.timer_on = true
 	#$Camera2D/died.set_visible_characters(0)
@@ -43,8 +44,7 @@ func _ready():
 	#Hides the restart prompt when the level starts
 	
 func _physics_process(delta):
-	if player_moved:
-		SpeedrunTimer.timer_on = true
+	SpeedrunTimer.timer_on = player_moved
 	
 	vel.y += gravity
 	
@@ -82,9 +82,11 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().change_scene("res://Title Screen/Title Screen.tscn")
 	
-	#Reloading current scene (For testing purposes)
-	#if Input.is_action_just_pressed("reload"): #Shift+R
-	#	get_tree().reload_current_scene()
+	# Quick reset for speedrun mode
+	if Input.is_action_just_pressed("reload") and GlobalFlags.speedrun_mode: #Shift+R
+		SpeedrunTimer.timer_on = false
+		SpeedrunTimer.time = 0
+		get_tree().change_scene("res://Levels/Level 1/Level 1.tscn")
 	
 	#When the player dies they can restart the level they died in
 	if Input.is_action_pressed("restart") and canrestart == true:
